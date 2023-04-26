@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RPC" Id="{802561c0-ad01-4453-87af-ef5a372c7100}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RPC
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	callCntAddition : UINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Addition" Id="{219d4a37-3601-46c1-90e8-1dad808a66ee}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable':='1'}
+METHOD Addition : UINT
+VAR_INPUT
+	val_a : UINT;
+	val_b : UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[callCntAddition := callCntAddition + 1;
+Addition := val_a + val_b;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_RPC">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RPC.Addition">
+      <LineId Id="9" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
