@@ -3,7 +3,7 @@
   <POU Name="MAIN" Id="{b287065f-b8ee-4be1-a1a7-426c57644ca7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fb_rcp : FB_RPC;
+	fb_rpc : FB_RPC;
 END_VAR
 ]]></Declaration>
     <Implementation>

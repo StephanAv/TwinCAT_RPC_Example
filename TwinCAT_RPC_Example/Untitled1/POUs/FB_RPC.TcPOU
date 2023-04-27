@@ -8,6 +8,9 @@ VAR_OUTPUT
 END_VAR
 VAR
 	callCntAddition : UINT;
+	callCntWriteStruct : UINT;
+	
+	m_myType : T_MyType;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -26,12 +29,31 @@ END_VAR
 Addition := val_a + val_b;]]></ST>
       </Implementation>
     </Method>
+    <Method Name="WriteStruct" Id="{510d9dfd-6ff4-43a2-a074-eb1bea49f8b0}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable':='1'}
+METHOD WriteStruct : UINT
+VAR_INPUT
+	in : T_MyType;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[m_myType.a := in.a;
+m_myType.b := in.b;
+m_myType.c := in.c;
+callCntWriteStruct := callCntWriteStruct + 1;
+WriteStruct := callCntWriteStruct;]]></ST>
+      </Implementation>
+    </Method>
     <LineIds Name="FB_RPC">
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_RPC.Addition">
       <LineId Id="9" Count="0" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RPC.WriteStruct">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="3" />
     </LineIds>
   </POU>
 </TcPlcObject>
