@@ -1,5 +1,26 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.44">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{0C08E61E-1BFA-43FB-ABC7-1B734E8C7631}" PersistentType="true">NewType</Name>
+			<BitSize>8</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+		</DataType>
+		<DataType>
+			<Name GUID="{CE55A16A-C04C-410E-B38A-F74E98E40EFB}" PersistentType="true">RpcEventClass</Name>
+			<DisplayName TxtId=""><![CDATA[NewEventClass_DisplayText]]></DisplayName>
+			<EventId>
+				<Name Id="1">WriteString</Name>
+				<DisplayName TxtId=""><![CDATA[WriteString() - String received]]></DisplayName>
+				<Severity>Warning</Severity>
+			</EventId>
+			<Hides>
+				<Hide GUID="{C7DA9564-0134-4FC7-B6BF-9816832DB35A}"/>
+				<Hide GUID="{04C46F9C-E9E9-4252-9CE2-12C5B0D42026}"/>
+				<Hide GUID="{78E94631-9C03-4922-BF3F-8C4304A5733D}"/>
+			</Hides>
+		</DataType>
+	</DataTypes>
 	<Project ProjectGUID="{F2B6A36F-1FDF-48D0-A56E-29D0E092FC61}" TargetNetId="5.80.201.232.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
 			<Tasks>
@@ -10,7 +31,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{1A5B33FE-23D7-4679-9EA6-6AB38C1C8398}" Name="Untitled1" PrjFilePath="Untitled1\Untitled1.plcproj" TmcFilePath="Untitled1\Untitled1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{CA4D0976-9FEC-D242-D4BB-992FAE136FD5}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{C02A7839-2E45-9E52-BAF3-70D3093DACAF}">
 					<Name>Untitled1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>

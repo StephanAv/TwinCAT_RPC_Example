@@ -29,12 +29,23 @@
         private void InitializeComponent()
         {
             groupBox_PLC = new GroupBox();
+            groupBox_Method_Read_Struct = new GroupBox();
+            textBox_MyType_C_ro = new TextBox();
+            textBox_MyType_B_ro = new TextBox();
+            textBox_MyType_A_ro = new TextBox();
+            label_ReadStruct_Definition = new Label();
+            groupBox_Method_WriteString = new GroupBox();
+            textBox_write_string = new TextBox();
+            btn_Call_Method_Write_String = new Button();
+            groupBox_Method_ReadString = new GroupBox();
+            btn_Call_Method_Read_String = new Button();
+            textBox_read_string = new TextBox();
             groupBox_Method_Write_Struct = new GroupBox();
             btn_Call_Method_Write_Struct = new Button();
             textBox_MyType_C = new TextBox();
             textBox_MyType_B = new TextBox();
             textBox_MyType_A = new TextBox();
-            label_Struct_Definition = new Label();
+            label_WriteStruct_Definition = new Label();
             groupBox_Method_Addition = new GroupBox();
             btn_Call_Method_Addition = new Button();
             textBox_Method_Addition_Return_Value = new TextBox();
@@ -55,7 +66,11 @@
             textBox_State = new TextBox();
             groupBox_state = new GroupBox();
             btn_clearState = new Button();
+            btn_Call_Method_Read_Struct = new Button();
             groupBox_PLC.SuspendLayout();
+            groupBox_Method_Read_Struct.SuspendLayout();
+            groupBox_Method_WriteString.SuspendLayout();
+            groupBox_Method_ReadString.SuspendLayout();
             groupBox_Method_Write_Struct.SuspendLayout();
             groupBox_Method_Addition.SuspendLayout();
             groupBox_AdsClient.SuspendLayout();
@@ -64,14 +79,122 @@
             // 
             // groupBox_PLC
             // 
+            groupBox_PLC.Controls.Add(groupBox_Method_Read_Struct);
+            groupBox_PLC.Controls.Add(groupBox_Method_WriteString);
+            groupBox_PLC.Controls.Add(groupBox_Method_ReadString);
             groupBox_PLC.Controls.Add(groupBox_Method_Write_Struct);
             groupBox_PLC.Controls.Add(groupBox_Method_Addition);
             groupBox_PLC.Location = new Point(35, 219);
             groupBox_PLC.Name = "groupBox_PLC";
-            groupBox_PLC.Size = new Size(616, 407);
+            groupBox_PLC.Size = new Size(616, 813);
             groupBox_PLC.TabIndex = 1;
             groupBox_PLC.TabStop = false;
             groupBox_PLC.Text = "PLC";
+            // 
+            // groupBox_Method_Read_Struct
+            // 
+            groupBox_Method_Read_Struct.Controls.Add(btn_Call_Method_Read_Struct);
+            groupBox_Method_Read_Struct.Controls.Add(textBox_MyType_C_ro);
+            groupBox_Method_Read_Struct.Controls.Add(textBox_MyType_B_ro);
+            groupBox_Method_Read_Struct.Controls.Add(textBox_MyType_A_ro);
+            groupBox_Method_Read_Struct.Controls.Add(label_ReadStruct_Definition);
+            groupBox_Method_Read_Struct.Location = new Point(21, 452);
+            groupBox_Method_Read_Struct.Name = "groupBox_Method_Read_Struct";
+            groupBox_Method_Read_Struct.Size = new Size(363, 165);
+            groupBox_Method_Read_Struct.TabIndex = 4;
+            groupBox_Method_Read_Struct.TabStop = false;
+            groupBox_Method_Read_Struct.Text = "Read Struct";
+            // 
+            // textBox_MyType_C_ro
+            // 
+            textBox_MyType_C_ro.Location = new Point(92, 122);
+            textBox_MyType_C_ro.Name = "textBox_MyType_C_ro";
+            textBox_MyType_C_ro.ReadOnly = true;
+            textBox_MyType_C_ro.Size = new Size(100, 23);
+            textBox_MyType_C_ro.TabIndex = 4;
+            // 
+            // textBox_MyType_B_ro
+            // 
+            textBox_MyType_B_ro.Location = new Point(92, 93);
+            textBox_MyType_B_ro.Name = "textBox_MyType_B_ro";
+            textBox_MyType_B_ro.ReadOnly = true;
+            textBox_MyType_B_ro.Size = new Size(100, 23);
+            textBox_MyType_B_ro.TabIndex = 3;
+            // 
+            // textBox_MyType_A_ro
+            // 
+            textBox_MyType_A_ro.Location = new Point(92, 64);
+            textBox_MyType_A_ro.Name = "textBox_MyType_A_ro";
+            textBox_MyType_A_ro.ReadOnly = true;
+            textBox_MyType_A_ro.Size = new Size(100, 23);
+            textBox_MyType_A_ro.TabIndex = 2;
+            // 
+            // label_ReadStruct_Definition
+            // 
+            label_ReadStruct_Definition.AutoSize = true;
+            label_ReadStruct_Definition.Location = new Point(8, 33);
+            label_ReadStruct_Definition.Name = "label_ReadStruct_Definition";
+            label_ReadStruct_Definition.Size = new Size(81, 120);
+            label_ReadStruct_Definition.TabIndex = 1;
+            label_ReadStruct_Definition.Text = "struct MyType\n{\n    a [uint]\n\n    b [double]\n\n    c [string\n}";
+            // 
+            // groupBox_Method_WriteString
+            // 
+            groupBox_Method_WriteString.Controls.Add(textBox_write_string);
+            groupBox_Method_WriteString.Controls.Add(btn_Call_Method_Write_String);
+            groupBox_Method_WriteString.Location = new Point(21, 332);
+            groupBox_Method_WriteString.Name = "groupBox_Method_WriteString";
+            groupBox_Method_WriteString.Size = new Size(363, 100);
+            groupBox_Method_WriteString.TabIndex = 3;
+            groupBox_Method_WriteString.TabStop = false;
+            groupBox_Method_WriteString.Text = "Write String";
+            // 
+            // textBox_write_string
+            // 
+            textBox_write_string.Location = new Point(31, 22);
+            textBox_write_string.Name = "textBox_write_string";
+            textBox_write_string.Size = new Size(284, 23);
+            textBox_write_string.TabIndex = 1;
+            textBox_write_string.Text = "Beckhoff";
+            // 
+            // btn_Call_Method_Write_String
+            // 
+            btn_Call_Method_Write_String.Location = new Point(31, 60);
+            btn_Call_Method_Write_String.Name = "btn_Call_Method_Write_String";
+            btn_Call_Method_Write_String.Size = new Size(284, 23);
+            btn_Call_Method_Write_String.TabIndex = 0;
+            btn_Call_Method_Write_String.Text = "Call WriteString()";
+            btn_Call_Method_Write_String.UseVisualStyleBackColor = true;
+            btn_Call_Method_Write_String.Click += btn_Call_Method_Write_String_Click;
+            // 
+            // groupBox_Method_ReadString
+            // 
+            groupBox_Method_ReadString.Controls.Add(btn_Call_Method_Read_String);
+            groupBox_Method_ReadString.Controls.Add(textBox_read_string);
+            groupBox_Method_ReadString.Location = new Point(21, 210);
+            groupBox_Method_ReadString.Name = "groupBox_Method_ReadString";
+            groupBox_Method_ReadString.Size = new Size(363, 100);
+            groupBox_Method_ReadString.TabIndex = 2;
+            groupBox_Method_ReadString.TabStop = false;
+            groupBox_Method_ReadString.Text = "Read String";
+            // 
+            // btn_Call_Method_Read_String
+            // 
+            btn_Call_Method_Read_String.Location = new Point(35, 61);
+            btn_Call_Method_Read_String.Name = "btn_Call_Method_Read_String";
+            btn_Call_Method_Read_String.Size = new Size(284, 23);
+            btn_Call_Method_Read_String.TabIndex = 1;
+            btn_Call_Method_Read_String.Text = "Call ReadString()";
+            btn_Call_Method_Read_String.UseVisualStyleBackColor = true;
+            btn_Call_Method_Read_String.Click += btn_Call_Method_Read_String_Click;
+            // 
+            // textBox_read_string
+            // 
+            textBox_read_string.Location = new Point(35, 22);
+            textBox_read_string.Name = "textBox_read_string";
+            textBox_read_string.ReadOnly = true;
+            textBox_read_string.Size = new Size(284, 23);
+            textBox_read_string.TabIndex = 0;
             // 
             // groupBox_Method_Write_Struct
             // 
@@ -79,8 +202,8 @@
             groupBox_Method_Write_Struct.Controls.Add(textBox_MyType_C);
             groupBox_Method_Write_Struct.Controls.Add(textBox_MyType_B);
             groupBox_Method_Write_Struct.Controls.Add(textBox_MyType_A);
-            groupBox_Method_Write_Struct.Controls.Add(label_Struct_Definition);
-            groupBox_Method_Write_Struct.Location = new Point(20, 206);
+            groupBox_Method_Write_Struct.Controls.Add(label_WriteStruct_Definition);
+            groupBox_Method_Write_Struct.Location = new Point(20, 623);
             groupBox_Method_Write_Struct.Name = "groupBox_Method_Write_Struct";
             groupBox_Method_Write_Struct.Size = new Size(364, 170);
             groupBox_Method_Write_Struct.TabIndex = 1;
@@ -121,14 +244,14 @@
             textBox_MyType_A.TabIndex = 1;
             textBox_MyType_A.Text = "42";
             // 
-            // label_Struct_Definition
+            // label_WriteStruct_Definition
             // 
-            label_Struct_Definition.AutoSize = true;
-            label_Struct_Definition.Location = new Point(6, 37);
-            label_Struct_Definition.Name = "label_Struct_Definition";
-            label_Struct_Definition.Size = new Size(81, 120);
-            label_Struct_Definition.TabIndex = 0;
-            label_Struct_Definition.Text = "struct MyType\n{\n    a [uint]\n\n    b [double]\n\n    c [string\n}";
+            label_WriteStruct_Definition.AutoSize = true;
+            label_WriteStruct_Definition.Location = new Point(6, 37);
+            label_WriteStruct_Definition.Name = "label_WriteStruct_Definition";
+            label_WriteStruct_Definition.Size = new Size(81, 120);
+            label_WriteStruct_Definition.TabIndex = 0;
+            label_WriteStruct_Definition.Text = "struct MyType\n{\n    a [uint]\n\n    b [double]\n\n    c [string\n}";
             // 
             // groupBox_Method_Addition
             // 
@@ -323,11 +446,21 @@
             btn_clearState.UseVisualStyleBackColor = true;
             btn_clearState.Click += btn_clearState_Click;
             // 
+            // btn_Call_Method_Read_Struct
+            // 
+            btn_Call_Method_Read_Struct.Location = new Point(217, 64);
+            btn_Call_Method_Read_Struct.Name = "btn_Call_Method_Read_Struct";
+            btn_Call_Method_Read_Struct.Size = new Size(124, 81);
+            btn_Call_Method_Read_Struct.TabIndex = 5;
+            btn_Call_Method_Read_Struct.Text = "Call ReadStruct()";
+            btn_Call_Method_Read_Struct.UseVisualStyleBackColor = true;
+            btn_Call_Method_Read_Struct.Click += btn_Call_Method_Read_Struct_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1208, 719);
+            ClientSize = new Size(1208, 1044);
             Controls.Add(groupBox_state);
             Controls.Add(groupBox_AdsClient);
             Controls.Add(groupBox_Cpp);
@@ -335,6 +468,12 @@
             Name = "Form1";
             Text = "Call RPC Method";
             groupBox_PLC.ResumeLayout(false);
+            groupBox_Method_Read_Struct.ResumeLayout(false);
+            groupBox_Method_Read_Struct.PerformLayout();
+            groupBox_Method_WriteString.ResumeLayout(false);
+            groupBox_Method_WriteString.PerformLayout();
+            groupBox_Method_ReadString.ResumeLayout(false);
+            groupBox_Method_ReadString.PerformLayout();
             groupBox_Method_Write_Struct.ResumeLayout(false);
             groupBox_Method_Write_Struct.PerformLayout();
             groupBox_Method_Addition.ResumeLayout(false);
@@ -370,10 +509,22 @@
         private GroupBox groupBox_state;
         private Button btn_clearState;
         private GroupBox groupBox_Method_Write_Struct;
-        private Label label_Struct_Definition;
+        private Label label_WriteStruct_Definition;
         private TextBox textBox_MyType_C;
         private TextBox textBox_MyType_B;
         private TextBox textBox_MyType_A;
         private Button btn_Call_Method_Write_Struct;
+        private GroupBox groupBox_Method_ReadString;
+        private TextBox textBox_read_string;
+        private Button btn_Call_Method_Read_String;
+        private GroupBox groupBox_Method_WriteString;
+        private Button btn_Call_Method_Write_String;
+        private TextBox textBox_write_string;
+        private GroupBox groupBox_Method_Read_Struct;
+        private Label label_ReadStruct_Definition;
+        private TextBox textBox_MyType_C_ro;
+        private TextBox textBox_MyType_B_ro;
+        private TextBox textBox_MyType_A_ro;
+        private Button btn_Call_Method_Read_Struct;
     }
 }

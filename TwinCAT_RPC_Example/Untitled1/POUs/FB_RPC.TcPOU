@@ -8,9 +8,14 @@ VAR_OUTPUT
 END_VAR
 VAR
 	callCntAddition : UINT;
+	callCntReadString : UINT;
+	callCntWriteString : UINT;
+	callCntReadStruct : UINT;
 	callCntWriteStruct : UINT;
 	
 	m_myType : T_MyType;
+	
+	fbMsg : FB_TcMessage;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -27,6 +32,67 @@ END_VAR
       <Implementation>
         <ST><![CDATA[callCntAddition := callCntAddition + 1;
 Addition := val_a + val_b;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{c5c4e316-c12b-4ba3-b329-1e3bdffc3cd9}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbMsg.CreateEx(TC_EVENTS.RpcEventClass.WriteString, 0);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ReadString" Id="{b09955d0-ae50-4305-b477-83977ac2d6e6}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable':='1'}
+METHOD ReadString : STRING
+VAR_INPUT
+END_VAR
+VAR
+	s_string : STRING := 'ReadString: Current call count: ';
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[callCntReadString := callCntReadString +1;
+ReadString := CONCAT(s_string, UDINT_TO_STRING(callCntReadString));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ReadStruct" Id="{9b7d9754-9fa1-4a6a-8e13-bb5d1dc7ffb0}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable':='1'}
+METHOD ReadStruct : T_MyType
+VAR_INPUT
+END_VAR
+VAR
+	myType : T_MyType;
+	s_string : STRING := 'ReadStuct() - ';
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[callCntReadStruct := callCntReadStruct + 1;
+myType.a := callCntReadStruct;
+myType.b := 1.0 / UINT_TO_LREAL(callCntReadStruct);
+myType.c := CONCAT(s_string, UDINT_TO_STRING(callCntReadStruct));
+
+ReadStruct := myType;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WriteString" Id="{458a276f-107a-4255-bfdb-a52b030572e5}">
+      <Declaration><![CDATA[{attribute 'TcRpcEnable':='1'}
+METHOD WriteString
+VAR_INPUT
+	in : STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[callCntWriteString := callCntWriteString +1;
+fbMsg.Send(0); 
+//ADSLOGSTR(
+//	msgCtrlMask := ADSLOG_MSGTYPE_WARN OR ADSLOG_MSGTYPE_LOG,
+//	msgFmtStr := 'String received: %s',
+//	strArg := in
+//	);]]></ST>
       </Implementation>
     </Method>
     <Method Name="WriteStruct" Id="{510d9dfd-6ff4-43a2-a074-eb1bea49f8b0}">
@@ -50,6 +116,25 @@ WriteStruct := callCntWriteStruct;]]></ST>
     <LineIds Name="FB_RPC.Addition">
       <LineId Id="9" Count="0" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RPC.FB_init">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RPC.ReadString">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RPC.ReadStruct">
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RPC.WriteString">
+      <LineId Id="12" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="3" />
     </LineIds>
     <LineIds Name="FB_RPC.WriteStruct">
       <LineId Id="5" Count="0" />
