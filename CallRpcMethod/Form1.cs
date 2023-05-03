@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography.Xml;
+using System.Text;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
 
@@ -14,15 +15,18 @@ namespace CallRpcMethod
         public double b;
         public string c;
     }
-    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+
+    [StructLayout(LayoutKind.Sequential, Pack = 8, CharSet = CharSet.Ansi)]
     public struct T_MyType
     {
         [MarshalAs(UnmanagedType.U4)]
         public UInt32 a; // 4 byte
         [MarshalAs(UnmanagedType.R8)]
         public double b; // 8 byte
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 81)]
-        public char[] c;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+        public string c;
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 81)]
+        //public char[] c;
     }
     public partial class Form1 : Form
     {
@@ -53,11 +57,11 @@ namespace CallRpcMethod
             catch (Exception ex)
             {
 
-                textBox_State.Text += ex.Message + Environment.NewLine;
+                textBox_State.AppendText(ex.Message + Environment.NewLine);
                 return;
             }
 
-            textBox_State.Text += "PLC connected" + Environment.NewLine;
+            textBox_State.AppendText("PLC connected" + Environment.NewLine);
 
             try
             {
@@ -66,11 +70,11 @@ namespace CallRpcMethod
             catch (Exception ex)
             {
 
-                textBox_State.Text += ex.Message + Environment.NewLine;
+                textBox_State.AppendText(ex.Message + Environment.NewLine);
                 return;
             }
 
-            textBox_State.Text += "TwinCAT C++ connected" + Environment.NewLine;
+            textBox_State.AppendText("TwinCAT C++ connected" + Environment.NewLine);
         }
 
         private async void btn_Call_Method_Addition_Click(object sender, EventArgs e)
@@ -88,17 +92,15 @@ namespace CallRpcMethod
                 }
                 else
                 {
-                    textBox_State.Text += "PLC Addition(): " + result.ErrorCode + Environment.NewLine;
+                    textBox_State.AppendText("PLC Addition(): " + result.ErrorCode + Environment.NewLine);
                 }
             }
             catch (Exception ex)
             {
-                textBox_State.Text += ex.Message + Environment.NewLine;
+                textBox_State.AppendText(ex.Message + Environment.NewLine);
                 return;
             }
         }
-
-
 
         private async void btn_Call_Method_Write_Struct_Click(object sender, EventArgs e)
         {
@@ -108,23 +110,37 @@ namespace CallRpcMethod
                 double b = Double.Parse(textBox_MyType_B.Text);
                 string c = textBox_MyType_C.Text;
 
-                MyType myTypeArgument = new MyType { a = a, b = b, c = c };
+                // Manual approach
+
+                //Byte[] c_ascii = Encoding.ASCII.GetBytes(c);
+                //byte[] buffer = new byte[104];
+                //MemoryStream ms = new MemoryStream(buffer);
+                //BinaryWriter bw = new BinaryWriter(ms);
+                //bw.Write(a);
+                //bw.Write(b);
+                //bw.Write(c_ascii);
+                //ResultRpcMethod result = await plcClient.InvokeRpcMethodAsync("MAIN.fb_rpc", "WriteStruct", new object[] { buffer }, cancel);
+
+
+                T_MyType myTypeArgument = new T_MyType { a = (uint)a, b = b, c = c };
+
+                // Test: size must match with the size of T_MyType in the PLC
+                var size = Marshal.SizeOf(myTypeArgument);
 
                 ResultRpcMethod result = await plcClient.InvokeRpcMethodAsync("MAIN.fb_rpc", "WriteStruct", new object[] { myTypeArgument }, cancel);
 
                 if (checkResult(result))
                 {
-                    //textBox_Method_Addition_Return_Value.Text = result.ReturnValue.ToString();
-                    int x = 3;
+                    textBox_State.AppendText("WriteStruct() call cnt returned: " + result.ReturnValue + Environment.NewLine);
                 }
                 else
                 {
-                    textBox_State.Text += "PLC WriteStruct(): " + result.ErrorCode + Environment.NewLine;
+                    textBox_State.AppendText("PLC WriteStruct(): " + result.ErrorCode + Environment.NewLine);
                 }
             }
             catch (Exception ex)
             {
-                textBox_State.Text += ex.Message + Environment.NewLine;
+                textBox_State.AppendText(ex.Message + Environment.NewLine);
             }
         }
 
@@ -141,13 +157,13 @@ namespace CallRpcMethod
                 }
                 else
                 {
-                    textBox_State.Text += "PLC ReadString(): " + result.ErrorCode + Environment.NewLine;
+                    textBox_State.AppendText("PLC ReadString(): " + result.ErrorCode + Environment.NewLine);
                 }
             }
             catch (Exception ex)
             {
 
-                textBox_State.Text += ex.Message + Environment.NewLine;
+                textBox_State.AppendText(ex.Message + Environment.NewLine);
             }
         }
 
@@ -160,17 +176,16 @@ namespace CallRpcMethod
 
                 if (result.Succeeded && result.ErrorCode != AdsErrorCode.NoError)
                 {
-                    textBox_State.Text += "PLC WriteString(): " + result.ErrorCode + Environment.NewLine;
+                    textBox_State.AppendText("PLC WriteString(): " + result.ErrorCode + Environment.NewLine);
 
                 }
             }
             catch (Exception ex)
             {
 
-                textBox_State.Text += ex.Message + Environment.NewLine;
+                textBox_State.AppendText(ex.Message + Environment.NewLine);
             }
         }
-
 
         private async void btn_Call_Method_Read_Struct_Click(object sender, EventArgs e)
         {
@@ -181,7 +196,7 @@ namespace CallRpcMethod
                 if (checkResult(result))
                 {
 
-                    
+
                     MemoryStream ms = new MemoryStream((byte[])result.ReturnValue);
                     //bf.Serialize(ms, result.ReturnValue);
                     BinaryReader br = new BinaryReader(ms);
@@ -196,6 +211,8 @@ namespace CallRpcMethod
                     textBox_MyType_A_ro.Text = a.ToString();
                     textBox_MyType_B_ro.Text = b.ToString();
                     textBox_MyType_C_ro.Text = c;
+
+                    // TODO: Marshal Klasse verwenden um Typen zurück zu lesen
 
                     //var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
                     //T_MyType result = (T_MyType)Marshal.PtrToStructure(pData.AddrOfPinnedObject(), typeof(T_MyType));
@@ -215,13 +232,13 @@ namespace CallRpcMethod
                 }
                 else
                 {
-                    textBox_State.Text += "PLC ReadStruct(): " + result.ErrorCode + Environment.NewLine;
+                    textBox_State.AppendText("PLC ReadStruct(): " + result.ErrorCode + Environment.NewLine);
                 }
             }
             catch (Exception ex)
             {
 
-                textBox_State.Text += ex.Message + Environment.NewLine;
+                textBox_State.AppendText(ex.Message + Environment.NewLine);
             }
         }
     }

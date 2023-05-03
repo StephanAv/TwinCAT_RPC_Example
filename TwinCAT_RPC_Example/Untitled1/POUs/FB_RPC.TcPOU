@@ -63,19 +63,10 @@ ReadString := CONCAT(s_string, UDINT_TO_STRING(callCntReadString));]]></ST>
       <Declaration><![CDATA[{attribute 'TcRpcEnable':='1'}
 METHOD ReadStruct : T_MyType
 VAR_INPUT
-END_VAR
-VAR
-	myType : T_MyType;
-	s_string : STRING := 'ReadStuct() - ';
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[callCntReadStruct := callCntReadStruct + 1;
-myType.a := callCntReadStruct;
-myType.b := 1.0 / UINT_TO_LREAL(callCntReadStruct);
-myType.c := CONCAT(s_string, UDINT_TO_STRING(callCntReadStruct));
-
-ReadStruct := myType;]]></ST>
+ReadStruct := m_myType;]]></ST>
       </Implementation>
     </Method>
     <Method Name="WriteString" Id="{458a276f-107a-4255-bfdb-a52b030572e5}">
@@ -126,9 +117,6 @@ WriteStruct := callCntWriteStruct;]]></ST>
     </LineIds>
     <LineIds Name="FB_RPC.ReadStruct">
       <LineId Id="5" Count="0" />
-      <LineId Id="10" Count="1" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="15" Count="0" />
       <LineId Id="14" Count="0" />
     </LineIds>
     <LineIds Name="FB_RPC.WriteString">

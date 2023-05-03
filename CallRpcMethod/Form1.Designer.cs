@@ -30,6 +30,7 @@
         {
             groupBox_PLC = new GroupBox();
             groupBox_Method_Read_Struct = new GroupBox();
+            btn_Call_Method_Read_Struct = new Button();
             textBox_MyType_C_ro = new TextBox();
             textBox_MyType_B_ro = new TextBox();
             textBox_MyType_A_ro = new TextBox();
@@ -66,7 +67,6 @@
             textBox_State = new TextBox();
             groupBox_state = new GroupBox();
             btn_clearState = new Button();
-            btn_Call_Method_Read_Struct = new Button();
             groupBox_PLC.SuspendLayout();
             groupBox_Method_Read_Struct.SuspendLayout();
             groupBox_Method_WriteString.SuspendLayout();
@@ -104,6 +104,16 @@
             groupBox_Method_Read_Struct.TabIndex = 4;
             groupBox_Method_Read_Struct.TabStop = false;
             groupBox_Method_Read_Struct.Text = "Read Struct";
+            // 
+            // btn_Call_Method_Read_Struct
+            // 
+            btn_Call_Method_Read_Struct.Location = new Point(217, 64);
+            btn_Call_Method_Read_Struct.Name = "btn_Call_Method_Read_Struct";
+            btn_Call_Method_Read_Struct.Size = new Size(124, 81);
+            btn_Call_Method_Read_Struct.TabIndex = 5;
+            btn_Call_Method_Read_Struct.Text = "Call ReadStruct()";
+            btn_Call_Method_Read_Struct.UseVisualStyleBackColor = true;
+            btn_Call_Method_Read_Struct.Click += btn_Call_Method_Read_Struct_Click;
             // 
             // textBox_MyType_C_ro
             // 
@@ -422,6 +432,7 @@
             textBox_State.Multiline = true;
             textBox_State.Name = "textBox_State";
             textBox_State.ReadOnly = true;
+            textBox_State.ScrollBars = ScrollBars.Vertical;
             textBox_State.Size = new Size(306, 115);
             textBox_State.TabIndex = 7;
             // 
@@ -445,16 +456,6 @@
             btn_clearState.Text = "Clear";
             btn_clearState.UseVisualStyleBackColor = true;
             btn_clearState.Click += btn_clearState_Click;
-            // 
-            // btn_Call_Method_Read_Struct
-            // 
-            btn_Call_Method_Read_Struct.Location = new Point(217, 64);
-            btn_Call_Method_Read_Struct.Name = "btn_Call_Method_Read_Struct";
-            btn_Call_Method_Read_Struct.Size = new Size(124, 81);
-            btn_Call_Method_Read_Struct.TabIndex = 5;
-            btn_Call_Method_Read_Struct.Text = "Call ReadStruct()";
-            btn_Call_Method_Read_Struct.UseVisualStyleBackColor = true;
-            btn_Call_Method_Read_Struct.Click += btn_Call_Method_Read_Struct_Click;
             // 
             // Form1
             // 
