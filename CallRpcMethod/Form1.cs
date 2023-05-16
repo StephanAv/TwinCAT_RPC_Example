@@ -1,3 +1,4 @@
+using System;
 using System.Formats.Asn1;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -25,8 +26,6 @@ namespace CallRpcMethod
         public double b; // 8 byte
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
         public string c;
-        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 81)]
-        //public char[] c;
     }
     public partial class Form1 : Form
     {
@@ -102,48 +101,6 @@ namespace CallRpcMethod
             }
         }
 
-        private async void btn_Call_Method_Write_Struct_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                long a = Int32.Parse(textBox_MyType_A.Text);
-                double b = Double.Parse(textBox_MyType_B.Text);
-                string c = textBox_MyType_C.Text;
-
-                // Manual approach
-
-                //Byte[] c_ascii = Encoding.ASCII.GetBytes(c);
-                //byte[] buffer = new byte[104];
-                //MemoryStream ms = new MemoryStream(buffer);
-                //BinaryWriter bw = new BinaryWriter(ms);
-                //bw.Write(a);
-                //bw.Write(b);
-                //bw.Write(c_ascii);
-                //ResultRpcMethod result = await plcClient.InvokeRpcMethodAsync("MAIN.fb_rpc", "WriteStruct", new object[] { buffer }, cancel);
-
-
-                T_MyType myTypeArgument = new T_MyType { a = (uint)a, b = b, c = c };
-
-                // Test: size must match with the size of T_MyType in the PLC
-                var size = Marshal.SizeOf(myTypeArgument);
-
-                ResultRpcMethod result = await plcClient.InvokeRpcMethodAsync("MAIN.fb_rpc", "WriteStruct", new object[] { myTypeArgument }, cancel);
-
-                if (checkResult(result))
-                {
-                    textBox_State.AppendText("WriteStruct() call cnt returned: " + result.ReturnValue + Environment.NewLine);
-                }
-                else
-                {
-                    textBox_State.AppendText("PLC WriteStruct(): " + result.ErrorCode + Environment.NewLine);
-                }
-            }
-            catch (Exception ex)
-            {
-                textBox_State.AppendText(ex.Message + Environment.NewLine);
-            }
-        }
-
         private async void btn_Call_Method_Read_String_Click(object sender, EventArgs e)
         {
             try
@@ -194,41 +151,22 @@ namespace CallRpcMethod
                 ResultRpcMethod result = await plcClient.InvokeRpcMethodAsync("MAIN.fb_rpc", "ReadStruct", new object[] { }, cancel);
 
                 if (checkResult(result))
-                {
-
-
+                {            
                     MemoryStream ms = new MemoryStream((byte[])result.ReturnValue);
-                    //bf.Serialize(ms, result.ReturnValue);
+
                     BinaryReader br = new BinaryReader(ms);
 
                     uint a = br.ReadUInt32();
                     ms.Position = 8; // Advance Position
                     double b = br.ReadDouble();
-                    //char[] c = new char[81];
 
                     string c = new string(br.ReadChars(81));
 
-                    textBox_MyType_A_ro.Text = a.ToString();
-                    textBox_MyType_B_ro.Text = b.ToString();
-                    textBox_MyType_C_ro.Text = c;
+                    T_MyType myType = new T_MyType { a = (uint)a, b = b, c = c };
 
-                    // TODO: Marshal Klasse verwenden um Typen zurück zu lesen
-
-                    //var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
-                    //T_MyType result = (T_MyType)Marshal.PtrToStructure(pData.AddrOfPinnedObject(), typeof(T_MyType));
-                    //pData.Free();
-
-                    //var ro_mem = new ReadOnlyMemory<byte>(result.ReturnValue);
-                    //var byteArray = ms.ToArray();
-                    //T_MyType t = (T_MyType)byteArray;
-                    //var test = CastToStruct(ms.ToArray());
-                    //ReadOnlySpan<byte> span = new ReadOnlySpan<byte>(result.ReturnValue);
-                    //var ob = MemoryMarshal.Cast<byte[], T_MyType>(byteArray);
-                    //result.ReturnValue.Con
-                    //ms.Position = 0;
-                    //bf.Se
-                    int x = 3;
-
+                    textBox_MyType_A_ro.Text = myType.a.ToString();
+                    textBox_MyType_B_ro.Text = myType.b.ToString();
+                    textBox_MyType_C_ro.Text = myType.c;
                 }
                 else
                 {
@@ -238,6 +176,48 @@ namespace CallRpcMethod
             catch (Exception ex)
             {
 
+                textBox_State.AppendText(ex.Message + Environment.NewLine);
+            }
+        }
+
+        private async void btn_Call_Method_Write_Struct_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                long a = Int32.Parse(textBox_MyType_A.Text);
+                double b = Double.Parse(textBox_MyType_B.Text);
+                string c = textBox_MyType_C.Text;
+
+                // Manual approach
+
+                //Byte[] c_ascii = Encoding.ASCII.GetBytes(c);
+                //byte[] buffer = new byte[104];
+                //MemoryStream ms = new MemoryStream(buffer);
+                //BinaryWriter bw = new BinaryWriter(ms);
+                //bw.Write(a);
+                //bw.Write(b);
+                //bw.Write(c_ascii);
+                //ResultRpcMethod result = await plcClient.InvokeRpcMethodAsync("MAIN.fb_rpc", "WriteStruct", new object[] { buffer }, cancel);
+
+
+                T_MyType myTypeArgument = new T_MyType { a = (uint)a, b = b, c = c};
+
+                // Test: size must match with the size of T_MyType in the PLC
+                //var size = Marshal.SizeOf(myTypeArgument);
+
+                ResultRpcMethod result = await plcClient.InvokeRpcMethodAsync("MAIN.fb_rpc", "WriteStruct", new object[] { myTypeArgument }, cancel);
+
+                if (checkResult(result))
+                {
+                    textBox_State.AppendText("WriteStruct() call cnt returned: " + result.ReturnValue + Environment.NewLine);
+                }
+                else
+                {
+                    textBox_State.AppendText("PLC WriteStruct(): " + result.ErrorCode + Environment.NewLine);
+                }
+            }
+            catch (Exception ex)
+            {
                 textBox_State.AppendText(ex.Message + Environment.NewLine);
             }
         }
